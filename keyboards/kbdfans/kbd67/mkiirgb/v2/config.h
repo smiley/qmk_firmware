@@ -4,7 +4,7 @@
 #define PRODUCT_ID      0x1225
 #define DEVICE_VER      0x0002
 #define MANUFACTURER    KBDfans
-#define PRODUCT         kbd67mkiirgb v2
+#define PRODUCT         KBD67 MKII
 
 #define MATRIX_ROWS 5
 #define MATRIX_COLS 15
@@ -45,3 +45,6 @@
 #define DRIVER_2_LED_TOTAL 32
 #define DRIVER_LED_TOTAL (DRIVER_1_LED_TOTAL + DRIVER_2_LED_TOTAL)
 #endif
+
+// Unbreak Ctrl+Shift+ESC
+#define GRAVE_ESC_SHIFT_OVERRIDE
