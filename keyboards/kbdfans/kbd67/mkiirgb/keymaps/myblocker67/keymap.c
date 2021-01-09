@@ -2,6 +2,7 @@
 #define _LAYER0 0
 #define _LAYER1 1
 
+#ifdef TAP_DANCE_ENABLE
 // Tap Dance declarations
 enum {
     TD_GRAVE_ESC,
@@ -13,7 +14,9 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_GRAVE_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_GRAVE, KC_ESC),
 };
 
+// Don't forget to enable tapdance in rules.mk with "TAP_DANCE_ENABLE"!
 #define KC_TAPESC TD(TD_GRAVE_ESC)
+#endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		[_LAYER0] = LAYOUT_65_ansi_blocker( /* Base */
