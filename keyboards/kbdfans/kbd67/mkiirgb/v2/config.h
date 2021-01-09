@@ -46,5 +46,9 @@
 #define DRIVER_LED_TOTAL (DRIVER_1_LED_TOTAL + DRIVER_2_LED_TOTAL)
 #endif
 
+#define SB_USE_CUSTOM_GRAVE_ESC
+
+#ifndef SB_USE_CUSTOM_GRAVE_ESC
 // Unbreak Ctrl+Shift+ESC
 #define GRAVE_ESC_SHIFT_OVERRIDE
+#endif
