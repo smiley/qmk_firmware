@@ -46,7 +46,10 @@
 #define DRIVER_LED_TOTAL (DRIVER_1_LED_TOTAL + DRIVER_2_LED_TOTAL)
 #endif
 
+// KC_GESC with some exceptions
 #define SB_USE_CUSTOM_GRAVE_ESC
+// Caps lock is moved to function layer, while layer-0 caps lock becomes a programmable F-key
+#define SB_FUNCTION_CAPSLOCK
 
 #ifndef SB_USE_CUSTOM_GRAVE_ESC
 // Unbreak Ctrl+Shift+ESC
