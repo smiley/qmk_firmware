@@ -23,13 +23,30 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #define KC_TAPESC TD(TD_GRAVE_ESC)
 #endif
 
-#ifdef SB_USE_CUSTOM_GRAVE_ESC
 enum custom_keycodes {
-    CC_GESC = SAFE_RANGE,
+    // Alias range
+#ifdef SB_FUNCTION_CAPSLOCK
+    SB_CAPSLOCK = KC_F22,
+    SB_FN_CAPSLOCK = KC_CAPS,
+#else
+    SB_CAPSLOCK = KC_CAPS,
+    SB_FN_CAPSLOCK = KC_TRNS,
+#endif
+    // Actual custom keycodes
+    CC_NULL = SAFE_RANGE,
+    // Tweaked KC_GESC
+    CC_GESC,
+    // USB polling rate test macro (DOWN(KC_SLASH) + WAIT(0ms) + UP(KC_SLASH))
+    CC_TEST,
+
+#ifdef SB_USE_CUSTOM_GRAVE_ESC
+    GESC = CC_GESC,
+#else
+    GESC = KC_GESC,
+#endif
 };
 
-#define GESC CC_GESC
-
+#ifdef SB_USE_CUSTOM_GRAVE_ESC
 static bool grave_esc_sent_escape = false;
 
 static bool process_record_cc_gesc(uint16_t keycode, keyrecord_t* record) {
@@ -56,15 +73,6 @@ static bool process_record_cc_gesc(uint16_t keycode, keyrecord_t* record) {
 }
 #else
 static inline bool process_record_cc_gesc(__attribute__((unused)) uint16_t keycode, __attribute__((unused)) keyrecord_t *record) { return true; }
-#define GESC KC_GESC
-#endif
-
-#ifdef SB_FUNCTION_CAPSLOCK
-#define SB_CAPSLOCK KC_F22
-#define SB_FN_CAPSLOCK KC_CAPS
-#else
-#define SB_CAPSLOCK KC_CAPS
-#define SB_FN_CAPSLOCK KC_TRNS
 #endif
 
 
@@ -79,7 +87,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             RESET,         KC_F1,    KC_F2,   KC_F3,  KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,    KC_DEL,     KC_PSCR,\
             EEP_RST,       RGB_TOG,  RGB_MOD, RGB_HUI,RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, KC_TRNS, KC_TRNS,  KC_SLCK,  KC_PAUS,   RCTL(KC_BSLASH), KC_END,\
             SB_FN_CAPSLOCK,RGB_SPI,  RGB_SPD, KC_TRNS,KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,             KC_TRNS,    KC_F23,\
-            KC_TRNS,       KC_TRNS,  KC_TRNS, KC_TRNS,KC_TRNS, KC_TRNS, NK_TOGG, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,            KC_TRNS,   KC_VOLU,    KC_MUTE,\
+            KC_TRNS,       KC_TRNS,  KC_TRNS, KC_TRNS,KC_TRNS, KC_TRNS, NK_TOGG, KC_TRNS, KC_TRNS, KC_TRNS, CC_TEST,            KC_TRNS,   KC_VOLU,    KC_MUTE,\
             KC_TRNS,       KC_TRNS,  KC_TRNS,                  KC_TRNS,                   KC_TRNS, KC_TRNS,                     KC_MPRV,   KC_VOLD,    KC_MNXT),
 };
 
@@ -107,6 +115,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             }
             break;
         #endif
+        case CC_TEST:
+            if (record->event.pressed) {
+                SEND_STRING("" SS_TAP(X_SLASH));
+            } else {
+                // no-op
+            }
         default:
             break;
     }

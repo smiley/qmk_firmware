@@ -1,4 +1,7 @@
 #pragma once
+
+#define USB_POLLING_INTERVAL_MS 1
+
 #include "config_common.h"
 #define VENDOR_ID       0x4B42 // KB
 #define PRODUCT_ID      0x1225
